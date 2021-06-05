@@ -2,6 +2,8 @@ from flask import Flask,render_template,request,redirect,jsonify
 from textblob import TextBlob
 import speech_recognition as sr
 import pyaudio
+import datefinder
+from datetime import datetime
 
 
 
@@ -70,7 +72,11 @@ def getresult(qid,opl,word):
                     result.append("other")
                 else:
                     result.append("others")
-
+    elif int(qid)==3:
+        a=datefinder.find_dates(word)
+        for dob in a:
+            datestring=dob.strftime("%d/%m/%Y")
+            result.append(datestring)
         '''nwords=TextBlob(word)
         a=nwords.noun_phrases
         for x in a:
@@ -103,9 +109,9 @@ def getresult(qid,opl,word):
 @app.route("/",methods=["GET","POST"])
 def index():
     transcript=""
-    #samplet="I suffer from Diabetes,Blood pressure,heart issues."
-    #sampleo=["Blood pressure","Heart","Others"]
-    #print(getresult("1",sampleo,samplet))
+    samplet="I was born on 25th of June 2000"
+    sampleo=[]
+    print(getresult("3",sampleo,samplet))
     questions=["Do you suffer from any health diseases?","What’s your annual income?","What is your dob?"]
     if request.method=="POST":
         qid=request.form['qid']
@@ -134,10 +140,10 @@ def index():
                 r.adjust_for_ambient_noise(source,duration=0.5)
                 data=r.record(source)
         transcript=r.recognize_google(data,key=None)
-        if int(qid)==1:
+        if (int(qid)==1)or(int(qid)==3):
             transcript=getresult(qid,opl,transcript)
         else:
-            transcript="Returning just the words since qid is 2 or 3.These are not ready yet.Voice words : "+transcript
+            transcript="Returning just the words since qid is 2.The code isn't ready yet for that.Voice words : "+transcript
         return render_template('index.html',transcript=transcript,questions=questions)
     return render_template('index.html',transcript=transcript,questions=questions)
 
