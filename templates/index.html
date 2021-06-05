@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Speech Recognition</title>
+{% endblock %}
+
+
+{% block body %}
+<div id="speechContainer">
+    <h1>Upload new File</h1>
+        <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file" />
+        <br><br>
+        <input type="submit" value="Transcribe" />
+    </form>
+   
+
+{% endblock %}
