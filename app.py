@@ -124,7 +124,7 @@ def index():
             print("Listening")
             with mic as source:
                 r=sr.Recognizer()
-                r.adjust_for_ambient_noise(source)
+                r.adjust_for_ambient_noise(source,duration=0.5)
                 data = r.listen(source)
         print("File Recieved")
         file=request.files["file"]
@@ -133,7 +133,7 @@ def index():
             print("Listening")
             with mic as source:
                 r=sr.Recognizer()
-                r.adjust_for_ambient_noise(source)
+                r.adjust_for_ambient_noise(source,duration=0.5)
                 data = r.listen(source)
         if file:
             r=sr.Recognizer()
