@@ -1,6 +1,10 @@
 from flask import Flask,render_template,request,redirect,jsonify
+from textblob import TextBlob
 import speech_recognition as sr
 import pyaudio
+
+
+
 app = Flask(__name__)
 
 
@@ -40,15 +44,55 @@ def api_all():
 
 def getresult(qid,opl,word):
     result=[]
-    print(qid,word)
+    for x in opl:
+        opl[opl.index(x)]=x.lower()
+    word=word.lower()
     if int(qid)==1:
+        nwords=TextBlob(word)
+        b=nwords.noun_phrases
+        for x in b:
+            x=x.lower()
+        if("other" in opl):
+            opl.remove("other")
+            opl.append("other")
+        if("others" in opl):
+            opl.remove("others")
+            opl.append("others")
+        print(opl)
+        print(b)
+        for a in opl:
+            if a in word:
+                result.append(a)
+                if(a in b):
+                    b.remove(a)
+            elif (("other" in opl)or("others" in opl)) and (a):
+                if "other" in opl:
+                    result.append("other")
+                else:
+                    result.append("others")
+
+        '''nwords=TextBlob(word)
+        a=nwords.noun_phrases
+        for x in a:
+            x=x.lower()
         for i in opl:
-            ind=word.find(i)
-            if ind!=-1:
+            try:
+                i=i.lower()
+                ind=a.index(i)
                 result.append(i)
-    '''elif qid==2:
-        a=[0,]
-    '''
+            except:
+                try:
+                    ind=a.index("others")
+                    result.append("others")
+                except:
+                    try:
+                        ind=a.index("other")
+                        result.append("other")
+                    except:
+                        continue
+            elif qid==2:
+                a=[0,]
+            '''
 
     return result
 
@@ -59,6 +103,9 @@ def getresult(qid,opl,word):
 @app.route("/",methods=["GET","POST"])
 def index():
     transcript=""
+    #samplet="I suffer from Diabetes,Blood pressure,heart issues."
+    #sampleo=["Blood pressure","Heart","Others"]
+    #print(getresult("1",sampleo,samplet))
     questions=["Do you suffer from any health diseases?","What’s your annual income?","What is your dob?"]
     if request.method=="POST":
         qid=request.form['qid']
@@ -90,7 +137,7 @@ def index():
         if int(qid)==1:
             transcript=getresult(qid,opl,transcript)
         else:
-            transcript="Returning just the words since quid is 2 or 3.These are not ready yet.Voice words : "+transcript
+            transcript="Returning just the words since qid is 2 or 3.These are not ready yet.Voice words : "+transcript
         return render_template('index.html',transcript=transcript,questions=questions)
     return render_template('index.html',transcript=transcript,questions=questions)
 
