@@ -1,5 +1,6 @@
 from flask import Flask,render_template,request,redirect,jsonify
 import speech_recognition as sr
+import pyaudio
 app = Flask(__name__)
 
 
@@ -42,13 +43,28 @@ def api_all():
 @app.route("/",methods=["GET","POST"])
 def index():
     transcript=""
+    questions=["Do you suffer from any health diseases?","What’s your annual income?","What is your dob?"]
     if request.method=="POST":
         if "file" not in request.files:
-            return redirect(request.url)
+            mic = sr.Microphone()
+            print("Listening")
+            with mic as source:
+                r=sr.Recognizer()
+                r.adjust_for_ambient_noise(source)
+                data = r.listen(source)
+            transcript=r.recognize_google(data,key=None)
+            return render_template('index.html',transcript=transcript,questions=questions)
         print("File Recieved")
         file=request.files["file"]
         if file.filename=="":
-            return redirect(request.url)
+            mic = sr.Microphone()
+            print("Listening")
+            with mic as source:
+                r=sr.Recognizer()
+                r.adjust_for_ambient_noise(source)
+                data = r.listen(source)
+            transcript=r.recognize_google(data,key=None)
+            return render_template('index.html',transcript=transcript,questions=questions)
         if file:
             r=sr.Recognizer()
             audioFile=sr.AudioFile(file)
@@ -56,7 +72,7 @@ def index():
                 r.adjust_for_ambient_noise(source,duration=0.5)
                 data=r.record(source)
             transcript=r.recognize_google(data,key=None)
-    return render_template('index.html',transcript=transcript)
+    return render_template('index.html',transcript=transcript,questions=questions)
 
 
 

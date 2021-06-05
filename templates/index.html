@@ -7,8 +7,18 @@
 
 {% block body %}
 <div id="speechContainer">
-    <h1>Upload new File</h1>
+    <h1>Speech Recognition and Analysis</h1>
         <form method="post" enctype="multipart/form-data">
+        <label for="question">Question :</label><br>
+        <select name="qid" id="qid">
+        {% for i in questions %}
+            <option value={{ loop.index }}>{{ i }}</option>
+        {% endfor %}
+        </select>
+        <br><br>
+        <label for="options"> Options : (Seperate each by a comma)</label><br><br>
+        <input type="text" name="options"><br><br>
+        <label for="file">Upload Audio File : (Leave blank if you want to use your microphone for input) </label><br><br>
         <input type="file" name="file" />
         <br><br>
         <input type="submit" value="Transcribe" />
