@@ -13,6 +13,12 @@
         <br><br>
         <input type="submit" value="Transcribe" />
     </form>
+    {% if transcript!="" %}
+    <div id="result">
+        <h1>Result</h1>
+        <p>{{transcript}}</p>
+    </div>
+    {% endif %}
    
 
 {% endblock %}
