@@ -11,9 +11,9 @@
 
 ## Tasks Done : 
 #### 1.UI to upload files and transcribe
-#### 2.Transcribes wav audio to text and displays it
+#### 2.Takes input in either audio wav file or from microphone.
+#### 3.Question 1 is working.Improvements possible.
 
 ## Tasks Left :
-#### 1.Taking input from microphone.
+#### 1.Requests to Question 2 and Question 3 not being handled yet.
 #### 2.Converting app to handle API requests.
-#### 3.Extracting answers from the transcribed text.

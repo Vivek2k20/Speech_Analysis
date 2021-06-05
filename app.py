@@ -38,6 +38,22 @@ def api_all():
 
 
 
+def getresult(qid,opl,word):
+    result=[]
+    print(qid,word)
+    if int(qid)==1:
+        for i in opl:
+            ind=word.find(i)
+            if ind!=-1:
+                result.append(i)
+    '''elif qid==2:
+        a=[0,]
+    '''
+
+    return result
+
+
+
 
 
 @app.route("/",methods=["GET","POST"])
@@ -45,6 +61,9 @@ def index():
     transcript=""
     questions=["Do you suffer from any health diseases?","What’s your annual income?","What is your dob?"]
     if request.method=="POST":
+        qid=request.form['qid']
+        options=request.form['options']
+        opl=options.split (",")
         if "file" not in request.files:
             mic = sr.Microphone()
             print("Listening")
@@ -52,8 +71,6 @@ def index():
                 r=sr.Recognizer()
                 r.adjust_for_ambient_noise(source)
                 data = r.listen(source)
-            transcript=r.recognize_google(data,key=None)
-            return render_template('index.html',transcript=transcript,questions=questions)
         print("File Recieved")
         file=request.files["file"]
         if file.filename=="":
@@ -63,15 +80,18 @@ def index():
                 r=sr.Recognizer()
                 r.adjust_for_ambient_noise(source)
                 data = r.listen(source)
-            transcript=r.recognize_google(data,key=None)
-            return render_template('index.html',transcript=transcript,questions=questions)
         if file:
             r=sr.Recognizer()
             audioFile=sr.AudioFile(file)
             with audioFile as source:
                 r.adjust_for_ambient_noise(source,duration=0.5)
                 data=r.record(source)
-            transcript=r.recognize_google(data,key=None)
+        transcript=r.recognize_google(data,key=None)
+        if int(qid)==1:
+            transcript=getresult(qid,opl,transcript)
+        else:
+            transcript="Returning just the words since quid is 2 or 3.These are not ready yet.Voice words : "+transcript
+        return render_template('index.html',transcript=transcript,questions=questions)
     return render_template('index.html',transcript=transcript,questions=questions)
 
 
