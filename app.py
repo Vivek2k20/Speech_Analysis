@@ -77,6 +77,8 @@ def getresult(qid,opl,word):
         for dob in a:
             datestring=dob.strftime("%d/%m/%Y")
             result.append(datestring)
+    elif int(qid)==4:
+        result.append(word)
         '''nwords=TextBlob(word)
         a=nwords.noun_phrases
         for x in a:
@@ -109,10 +111,10 @@ def getresult(qid,opl,word):
 @app.route("/",methods=["GET","POST"])
 def index():
     transcript=""
-    samplet="I was born on 25th of June 2000"
+    samplet="I was born in 2000,July 25th"
     sampleo=[]
     print(getresult("3",sampleo,samplet))
-    questions=["Do you suffer from any health diseases?","What’s your annual income?","What is your dob?"]
+    questions=["Do you suffer from any health diseases?","What’s your annual income?","What is your dob?","No questions.Just return voice"]
     if request.method=="POST":
         qid=request.form['qid']
         options=request.form['options']
@@ -140,7 +142,7 @@ def index():
                 r.adjust_for_ambient_noise(source,duration=0.5)
                 data=r.record(source)
         transcript=r.recognize_google(data,key=None)
-        if (int(qid)==1)or(int(qid)==3):
+        if (int(qid)!=2):
             transcript=getresult(qid,opl,transcript)
         else:
             transcript="Returning just the words since qid is 2.The code isn't ready yet for that.Voice words : "+transcript
