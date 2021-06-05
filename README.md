@@ -1,5 +1,7 @@
 # Speech Analysis.
-#### Contains both API and frontend.Takes the following input : question id,options and audio.The answer is returned.
+#### Contains both API and frontend.
+#### Uses Flask.
+#### Takes the following input : question id,options and audio.The answer is returned.
 
 ## Team Members : 
 #### Niharika C
