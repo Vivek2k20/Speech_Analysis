@@ -42,6 +42,15 @@ def api_all():
 '''
 
 
+def det_range(opl):
+    a=[0,]
+    #print(opl)
+    for x in opl:
+        a=a+[int(s) for s in x.split("-")]
+    a=a+[100]
+    return a
+
+
 
 
 def getresult(qid,opl,word):
@@ -60,8 +69,8 @@ def getresult(qid,opl,word):
         if("others" in opl):
             opl.remove("others")
             opl.append("others")
-        print(opl)
-        print(b)
+        #print(opl)
+        #print(b)
         for a in opl:
             if a in word:
                 result.append(a)
@@ -72,6 +81,27 @@ def getresult(qid,opl,word):
                     result.append("other")
                 else:
                     result.append("others")
+    elif int(qid)==2:
+        buffer=opl.copy()
+        for i in range(len(opl)):
+            opl[i]=opl[i].replace(">","")
+            opl[i]=opl[i].replace("<","")
+            opl[i]=opl[i].replace("lakhs","")
+            opl[i]=opl[i].replace("lacs","")
+            opl[i]=opl[i].replace("lakh","")
+            opl[i]=opl[i].replace("lac","")
+            opl[i]=opl[i].replace("lpa","")
+        a=det_range(opl)
+        #print(word)
+        b=[int(s) for s in word.split(" ") if s.isdigit()]
+        i=0
+        #print(b)
+        if(len(b)==0):
+            result.append("Sorry,Processing failed.Either there was no answer or didn't catch your voice.Please try again")
+            return result
+        while (b[0]>=a[i*2+1]) :
+            i=i+1
+        result.append(buffer[i])
     elif int(qid)==3:
         a=datefinder.find_dates(word)
         for dob in a:
@@ -111,13 +141,15 @@ def getresult(qid,opl,word):
 @app.route("/",methods=["GET","POST"])
 def index():
     transcript=""
-    samplet="I was born in 2000,July 25th"
-    sampleo=[]
-    print(getresult("3",sampleo,samplet))
+    #samplet="I earn 23 Lakh"
+    #sampleo=["<5lakh","5lakh-15lakh","15lakh-20lakh","20lakh>"]
+    #print(getresult("2",sampleo,samplet))
     questions=["Do you suffer from any health diseases?","What’s your annual income?","What is your dob?","No questions.Just return voice"]
     if request.method=="POST":
         qid=request.form['qid']
         options=request.form['options']
+        if ((qid==1)or(qid==2))and(options==""):
+            return render_template('index.html',transcript="The Questions chosen require to enter options",questions=questions)
         opl=options.split (",")
         if "file" not in request.files:
             mic = sr.Microphone()
@@ -142,10 +174,7 @@ def index():
                 r.adjust_for_ambient_noise(source,duration=0.5)
                 data=r.record(source)
         transcript=r.recognize_google(data,key=None)
-        if (int(qid)!=2):
-            transcript=getresult(qid,opl,transcript)
-        else:
-            transcript="Returning just the words since qid is 2.The code isn't ready yet for that.Voice words : "+transcript
+        transcript=getresult(qid,opl,transcript)
         return render_template('index.html',transcript=transcript,questions=questions)
     return render_template('index.html',transcript=transcript,questions=questions)
 
