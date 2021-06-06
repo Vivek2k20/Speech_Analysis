@@ -9,9 +9,10 @@ from textblob import TextBlob
 import speech_recognition as sr
 import pyaudio
 import datefinder
+from base64 import b64encode
 from datetime import datetime
 
-
+ENCODING = 'utf-8'
 
 app = Flask(__name__)
 
@@ -173,15 +174,17 @@ def ctoj():
     if request.method=='POST':
         qid=request.form["question_key"]
         options=request.form["options"]
-        audio=request.files["audio"]
+        audiofile=request.files["audio"]
+        audio=b64encode(audiofile.read())
+        audiostring=audio.decode(ENCODING)
         data={
             "qid":qid,
             "options":options,
-            "audio":audio
+            "audio":audiostring
         }
         print("entered ctoj")
-        response=requests.post('localhost:5000/api',json=data)
-        return render_template('api.html',questions=questions,transcript=response)
+        requests.post('http://127.0.0.1:5000/api',json=data)
+        return render_template('api.html',questions=questions,transcript="")
     else:
         return render_template('api.html',questions=questions,transcript="")
 

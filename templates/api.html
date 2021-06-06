@@ -24,7 +24,13 @@
         <br><br>
         <input type="submit" value="Analyse/Transcribe" />
     </form>
-</div>
+</div><br><br>
+    {% if transcript!="" %}
+    <div id="result">
+        <h1>Result</h1>
+        <p id="speechtext">{{transcript}}</p>
+    </div>
+    {% endif %}
 
    
 
