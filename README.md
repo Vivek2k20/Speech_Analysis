@@ -1,5 +1,5 @@
 # Speech Analysis.
-#### Contains both API and frontend.
+#### Contains a web app and API.
 #### Uses Flask.
 #### Takes the following input : question id,options and audio.The answer is returned.
 
@@ -16,7 +16,7 @@
 #### 4.Question 2 is working with excellent accuracy.
 #### 5.Question 3 is working with excellent accuracy.
 #### 6.Unprocessed Transcribed Audio can also be obtained.
+#### 7.API Endpoint created to handle requests
 
 ## Tasks Left :
-#### 1.Converting app to handle API requests.
-#### 2.Handling exceptions,errors and unexpected testcases.
+#### 1.API Testing Tool(UI is done.Need to pass all form elements and audio in form of JSON to the API endpoint.)

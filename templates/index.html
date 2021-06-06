@@ -18,11 +18,12 @@
         <br><br>
         <label for="options"> Options : (Seperate each by a comma)</label><br><br>
         <input type="text" name="options"><br><br>
-        <label for="file">Upload Audio File : (Leave blank if you want to use your microphone for input) </label><br><br>
+        <label for="file">Upload WAV Audio File : (Leave blank if you want to use your microphone for input) </label><br><br>
         <input type="file" name="file" />
         <br><br>
-        <input type="submit" value="Transcribe" />
+        <input type="submit" value="Transcribe/Record" />
     </form>
+</div><br><br>
     {% if transcript!="" %}
     <div id="result">
         <h1>Result</h1>

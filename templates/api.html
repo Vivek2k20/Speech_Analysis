@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Speech Recognition</title>
+{% endblock %}
+
+
+{% block body %}
+<div id="speechContainer">
+    <h1>Speech Recognition and Analysis</h1>
+    <h2>API Frontend for testing.Converts form data to JSON and uses API.</h2>
+        <form url="/api" method="post" enctype="multipart/form-data">
+        <label for="question_key">Question :</label><br>
+        <select name="question_key" id="question_key">
+        {% for i in questions %}
+            <option value={{ "q"+(loop.index)|string }}>{{ i }}</option>
+        {% endfor %}
+        </select>
+        <br><br>
+        <label for="options"> Options : (Seperate each by a comma)</label><br><br>
+        <input type="text" name="options"><br><br>
+        <label for="audio">Upload WAV Audio File :  </label><br><br>
+        <input type="file" name="audio" />
+        <br><br>
+        <input type="submit" value="Analyse/Transcribe" onclick="submit_message();" />
+    </form>
+</div>
+    <script>
+    function submit_message() {
+
+        var question_key = document.getElementById("question_key");
+        var options = document.getElementById("options");
+        var audio = document.getElementById("audio");
+        var request = {
+            question_key: question_key.value,
+            options: options.value,
+            audio:audio.value
+        };
+        fetch(`${window.origin}`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify(request),
+      cache: "no-cache",
+      headers: new Headers({
+        "content-type": "application/json"
+      })
+    })
+
+  }
+    }
+    </script>
+   
+
+{% endblock %}

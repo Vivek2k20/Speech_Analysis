@@ -10,36 +10,7 @@ from datetime import datetime
 app = Flask(__name__)
 
 
-''' 
-API PART TO WORK ON LATER
-
-
-Create some test data for our request in the form of a list of dictionaries.
-questions = [
-    {
-        'question_key': "q1",
-        'options':["Diabetes","Thyroid","Cancer"],
-        'audio': base {} audio
-    },
-    {
-        'question_key': "q2",
-        'options':["<2lakh","2lakh-5lakh","5lakh-10lakh","10lakh>"],
-        'audio': base {} audio
-    },
-    {
-        'question_key': "q3",
-        'options':[],
-        'audio': base {} audio
-    }
-]
-
-
-This is the URL FOr which Requests are handled by the API
-@app.route('/api/v1/resources/books/all', methods=['GET'])
-def api_all():
-    return jsonify(questions)
-
-'''
+questions=["Do you suffer from any health diseases?","What’s your annual income?","What is your dob?","No questions.Just return voice"]
 
 
 def det_range(opl):
@@ -109,29 +80,8 @@ def getresult(qid,opl,word):
             result.append(datestring)
     elif int(qid)==4:
         result.append(word)
-        '''nwords=TextBlob(word)
-        a=nwords.noun_phrases
-        for x in a:
-            x=x.lower()
-        for i in opl:
-            try:
-                i=i.lower()
-                ind=a.index(i)
-                result.append(i)
-            except:
-                try:
-                    ind=a.index("others")
-                    result.append("others")
-                except:
-                    try:
-                        ind=a.index("other")
-                        result.append("other")
-                    except:
-                        continue
-            elif qid==2:
-                a=[0,]
-            '''
-
+    else:
+        result.append("Unknown Question ID")
     return result
 
 
@@ -144,12 +94,11 @@ def index():
     #samplet="I earn 23 Lakh"
     #sampleo=["<5lakh","5lakh-15lakh","15lakh-20lakh","20lakh>"]
     #print(getresult("2",sampleo,samplet))
-    questions=["Do you suffer from any health diseases?","What’s your annual income?","What is your dob?","No questions.Just return voice"]
     if request.method=="POST":
         qid=request.form['qid']
         options=request.form['options']
         if ((qid==1)or(qid==2))and(options==""):
-            return render_template('index.html',transcript="The Questions chosen require to enter options",questions=questions)
+            return render_template('index.html',transcript="The Questions chosen require to enter options.Since no option is given,The result is []",questions=questions)
         opl=options.split (",")
         if "file" not in request.files:
             mic = sr.Microphone()
@@ -178,6 +127,41 @@ def index():
         return render_template('index.html',transcript=transcript,questions=questions)
     return render_template('index.html',transcript=transcript,questions=questions)
 
+
+
+
+
+'''
+#################################################################
+This is the URL endpoint for the API
+#################################################################
+'''
+@app.route('/api', methods=['GET','POST'])
+def api():
+    if request.method=='POST':
+        json_data=request.json()
+        print (json_data)
+        response={}
+        qid=json_data['question_key']
+        qid=int(qid[len(qid)-1])
+        options=json_data['options']
+        if ((qid==1)or(qid==2))and(options==""):
+            response['answers']=[]
+            return jsonify(response)
+        audio_file=json_data['audio']
+        if audio_file.filename=="":
+            return("No file Uploaded.")
+        r=sr.Recognizer()
+        audioFile=sr.AudioFile(audio_file)
+        with audioFile as source:
+            r.adjust_for_ambient_noise(source,duration=0.5)
+            adata=r.record(source)
+        transcript=r.recognize_google(adata,key=None)
+        opl=options.split (",")
+        response['answers']=getresult(qid,opl,transcript)
+        return jsonify(response)
+    else:
+        return render_template('api.html',questions=questions)
 
 
 
