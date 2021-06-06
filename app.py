@@ -67,6 +67,9 @@ def getresult(qid,opl,word):
         if("others" in opl):
             opl.remove("others")
             opl.append("others")
+        if("none" in opl):
+            opl.remove("none")
+            opl.append("none")
         #print(opl)
         #print(b)
         for a in opl:
@@ -76,9 +79,11 @@ def getresult(qid,opl,word):
                     b.remove(a)
             elif (("other" in opl)or("others" in opl)) and (a):
                 if "other" in opl:
-                    result.append("other")
+                    result.append("Other")
                 else:
-                    result.append("others")
+                    result.append("Others")
+        if (len(result)==0)and("none" in opl):
+            result.append("None")
     elif int(qid)==2:
         buffer=opl.copy()
         for i in range(len(opl)):
