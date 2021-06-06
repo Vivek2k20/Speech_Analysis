@@ -77,11 +77,11 @@ def getresult(qid,opl,word):
                 result.append(a)
                 if(a in b):
                     b.remove(a)
-            elif (("other" in opl)or("others" in opl)) and (a):
-                if "other" in opl:
-                    result.append("Other")
-                else:
-                    result.append("Others")
+        if (len(a)!=0)and(("other" in opl)or("others" in opl)):
+            if "other" in opl:
+                result.append("Other")
+            else:
+                result.append("Others")
         if (len(result)==0)and("none" in opl):
             result.append("None")
     elif int(qid)==2:
