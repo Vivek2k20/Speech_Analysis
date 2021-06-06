@@ -70,7 +70,7 @@ def getresult(qid,opl,word):
         if(len(b)==0):
             result.append("Sorry,Processing failed.Either there was no answer or didn't catch your voice.Please try again")
             return result
-        while (b[0]>=a[i*2+1]) :
+        while not((b[0]>=a[i*2])and(b[0]<a[i*2+1])) :
             i=i+1
         result.append(buffer[i])
     elif int(qid)==3:
@@ -122,8 +122,11 @@ def index():
             with audioFile as source:
                 r.adjust_for_ambient_noise(source,duration=0.5)
                 data=r.record(source)
-        transcript=r.recognize_google(data,key=None)
-        transcript=getresult(qid,opl,transcript)
+        try:
+            transcript=r.recognize_google(data,key=None)
+            transcript=getresult(qid,opl,transcript)
+        except:
+            transcript="No Internet Connection.Please try again after connecting to the internet."
         return render_template('index.html',transcript=transcript,questions=questions)
     return render_template('index.html',transcript=transcript,questions=questions)
 
