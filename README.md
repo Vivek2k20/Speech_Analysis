@@ -15,7 +15,7 @@
 #### 2.Run app.py
 #### 3.Web App is hosted at "localhost:5000".Works fine.
 #### 4.API can be accessed at "localhost:5000/api" using "POST" method and sending the data in JSON format.The Backend and logic is ready.
-#### 5.API Testing UI can be access at "localhost:5000/api" using "GET" method.This was supposed to take inputs from the user and call the API and pass the inputs in form of JSON.But,we are stuck in the frontend.Unable to encode audio file into JSON and pass.So,The tool is unable to send the JSON Data. However,The Backend seems fine and should be able to handle JSON data it recieves.
+#### 5.API Testing UI can be access at "localhost:5000/api" using "GET" method.This was supposed to take inputs from the user and call the API and pass the inputs in form of JSON.But,we are stuck in the frontend.Unable to encode audio file into JSON and pass.So,The tool is unable to send the JSON Data. However,The Backend seems fine and should be able to handle JSON data it recieves.But again,Couldn't test it or debug it.
 
 
 

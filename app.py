@@ -175,6 +175,8 @@ This is the URL endpoint for the API
 def api():
     if request.method=='POST':
         json_data=request.json()
+        if json_data==None:
+            json_data=request.data()
         print (json_data)
         response={}
         qid=json_data['question_key']
