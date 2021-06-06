@@ -26,17 +26,20 @@
     </form>
 </div>
     <script>
-    function getAudio(){
-        const audioFilePath = `${appRoot}/q1/audio/${test_case_id}.ogg`
-        const buffer = fs.readFileSync(audioFilePath)
-        return buffer.toString("base64")
-      }
+
+    function getFilePath(){
+     $('input[type=file]').change(function () {
+         var filePath=$('#fileUpload').val(); 
+         return filePath
+     });
 
     function submit_message() {
 
         var question_key = document.getElementById("question_key");
         var options = document.getElementById("options");
-        var audio = document.getElementById("audio");
+        var audioFilePath = getFilePath();
+        const buffer = fs.readFileSync(audioFilePath)
+        var audio=buffer.toString("base64")
         var request = {
             question_key: question_key.value,
             options: options.value,
