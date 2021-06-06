@@ -9,7 +9,7 @@
 <div id="speechContainer">
     <h1>Speech Recognition and Analysis</h1>
     <h2>API Frontend for testing.Converts form data to JSON and uses API.</h2>
-        <form url="/api" method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data">
         <label for="question_key">Question :</label><br>
         <select name="question_key" id="question_key">
         {% for i in questions %}
@@ -22,42 +22,10 @@
         <label for="audio">Upload WAV Audio File :  </label><br><br>
         <input type="file" name="audio" />
         <br><br>
-        <input type="submit" value="Analyse/Transcribe" onclick="submit_message();" />
+        <input type="submit" value="Analyse/Transcribe" />
     </form>
 </div>
-    <script>
 
-    function getFilePath(){
-     $('input[type=file]').change(function () {
-         var filePath=$('#fileUpload').val(); 
-         return filePath
-     });
-
-    function submit_message() {
-
-        var question_key = document.getElementById("question_key");
-        var options = document.getElementById("options");
-        var audioFilePath = getFilePath();
-        const buffer = fs.readFileSync(audioFilePath)
-        var audio=buffer.toString("base64")
-        var request = {
-            question_key: question_key.value,
-            options: options.value,
-            audio:audio.value
-        };
-        fetch(`${window.origin}`, {
-      method: "POST",
-      credentials: "include",
-      body: JSON.stringify(request),
-      cache: "no-cache",
-      headers: new Headers({
-        "content-type": "application/json"
-      })
-    })
-
-  }
-    }
-    </script>
    
 
 {% endblock %}

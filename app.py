@@ -4,6 +4,7 @@ Importing stuff and initializing
 #################################################################
 '''
 from flask import Flask,render_template,request,redirect,jsonify
+import json,requests
 from textblob import TextBlob
 import speech_recognition as sr
 import pyaudio
@@ -166,12 +167,33 @@ def index():
 
 
 
+
+@app.route('/api/test', methods=['GET','POST'])
+def ctoj():
+    if request.method=='POST':
+        qid=request.form["question_key"]
+        options=request.form["options"]
+        audio=request.files["audio"]
+        data={
+            "qid":qid,
+            "options":options,
+            "audio":audio
+        }
+        print("entered ctoj")
+        response=requests.post('localhost:5000/api',json=data)
+        return render_template('api.html',questions=questions,transcript=response)
+    else:
+        return render_template('api.html',questions=questions,transcript="")
+
+
+
+
 '''
 #################################################################
 This is the URL endpoint for the API
 #################################################################
 '''
-@app.route('/api', methods=['GET','POST'])
+@app.route('/api', methods=['POST'])
 def api():
     if request.method=='POST':
         json_data=request.json()
@@ -197,8 +219,8 @@ def api():
         opl=options.split (",")
         response['answers']=getresult(qid,opl,transcript)
         return jsonify(response)
-    else:
-        return render_template('api.html',questions=questions)
+
+
 
 
 
