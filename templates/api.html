@@ -26,6 +26,12 @@
     </form>
 </div>
     <script>
+    function getAudio(){
+        const audioFilePath = `${appRoot}/q1/audio/${test_case_id}.ogg`
+        const buffer = fs.readFileSync(audioFilePath)
+        return buffer.toString("base64")
+      }
+
     function submit_message() {
 
         var question_key = document.getElementById("question_key");

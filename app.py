@@ -1,3 +1,8 @@
+'''
+#################################################################
+Importing stuff and initializing
+#################################################################
+'''
 from flask import Flask,render_template,request,redirect,jsonify
 from textblob import TextBlob
 import speech_recognition as sr
@@ -10,9 +15,24 @@ from datetime import datetime
 app = Flask(__name__)
 
 
+
+
+'''
+#################################################################
+List of Questions
+#################################################################
+'''
 questions=["Do you suffer from any health diseases?","What’s your annual income?","What is your dob?","No questions.Just return voice"]
 
 
+
+
+
+'''
+#################################################################
+Used for Determining the range of salaries given in options in case 2
+#################################################################
+'''
 def det_range(opl):
     a=[0,]
     #print(opl)
@@ -24,6 +44,11 @@ def det_range(opl):
 
 
 
+'''
+#################################################################
+Analysing the transcript and extracting the answer
+#################################################################
+'''
 def getresult(qid,opl,word):
     result=[]
     for x in opl:
@@ -57,6 +82,7 @@ def getresult(qid,opl,word):
         for i in range(len(opl)):
             opl[i]=opl[i].replace(">","")
             opl[i]=opl[i].replace("<","")
+            opl[i]=opl[i].replace("lakhs per annum","")
             opl[i]=opl[i].replace("lakhs","")
             opl[i]=opl[i].replace("lacs","")
             opl[i]=opl[i].replace("lakh","")
@@ -88,6 +114,11 @@ def getresult(qid,opl,word):
 
 
 
+'''
+#################################################################
+Home/UI for testing logic
+#################################################################
+'''
 @app.route("/",methods=["GET","POST"])
 def index():
     transcript=""
@@ -109,6 +140,7 @@ def index():
                 data = r.listen(source)
         print("File Recieved")
         file=request.files["file"]
+        #print(file)
         if file.filename=="":
             mic = sr.Microphone()
             print("Listening")
@@ -170,6 +202,10 @@ def api():
 
 
 
-
+'''
+#################################################################
+Running App
+#################################################################
+'''
 if __name__=="__main__":
     app.run(debug=True,threaded=True)
