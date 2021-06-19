@@ -12,13 +12,13 @@
 
 ##  INFO/STEPS TO RUN :
 #### 1.Create a virtual environment if necessary and install the requirements mentioned in requirements.txt.
-##### <i>Note : If installation from the txt file fails,Install the following modules manually :
-##### <i>flask
-##### <i>SpeechRecognition
-##### <i>requests
-##### <i>textblob
-##### <i>pipwin
-##### <i>pyaudio
+###### <i>Note : If installation from the txt file fails,Install the following modules manually :
+###### flask
+###### SpeechRecognition
+###### requests
+###### textblob
+###### pipwin
+###### pyaudio</i>
 #### 2.Run app.py
 #### 3.Web App is hosted at "localhost:5000".Works fine.
 #### 4.API can be accessed at "localhost:5000/api" using "POST" method and sending the data in JSON format.
