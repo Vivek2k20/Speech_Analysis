@@ -1,6 +1,6 @@
 # Speech Analysis.
 #### Contains a web app and API.
-#### Uses Flask.
+#### Uses Flask,Google-Speech-Web API.
 #### Takes the following input : question id,options and audio.The answer is returned.
 
 ## Team Members : 
