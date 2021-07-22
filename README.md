@@ -1,5 +1,6 @@
 # Speech Analysis.
-#### Contains a web app and API.
+#### Developed as a part of 24hr hackathon. The problem statement is given in the "ProblemStatement.pdf"
+#### Contains a web app and an attempted API.
 #### Uses Flask,Google-Speech-Web API.
 #### Takes the following input : question id,options and audio.The answer is returned.
 
