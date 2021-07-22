@@ -1,8 +1,9 @@
 # Speech Analysis.
-#### Developed as a part of 24hr hackathon. The problem statement is given in the "Problem Statement.pdf"
+#### Developed as a part of 24hr "Ode to Code" hackathon conducted by Riskcovry and BMSCE,CSE Dept. 
+#### Won 2nd Place in the Competetion .The problem statement is given in the "Problem Statement.pdf" file.
 #### Contains a web app and an attempted API.
 #### Uses Flask,Google-Speech-Web API.
-#### Takes the following input : question id,options and audio.The answer is returned.The Project can be viewed in action in the "Demo.mp4"
+#### Takes the following input : question id,options and audio.The answer is returned.The Project can be viewed in action in the "Demo.mp4" file.
 
 ## Team Members : 
 #### Niharika C
